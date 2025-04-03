@@ -1,0 +1,20 @@
+services:
+  gobierno:
+    build: ./gobierno
+    container_name: gobierno_container
+    ports:
+      - "50051:50051"
+    networks:
+      - testnetwork
+
+  cazarrecompensas:
+    build: ./cazarrecompensas
+    container_name: cazarrecompensas_container
+    networks:
+      - testnetwork
+    depends_on:
+      - gobierno
+
+networks:
+  testnetwork:
+    external: false

@@ -1,0 +1,47 @@
+syntax = "proto3";
+package comunicacion;
+
+option go_package = "grpc-server/proto";
+
+// Servicio principal que define las operaciones disponibles
+service Comunicacion {
+  rpc consultarListaPiratas (empty) returns (Respuesta);
+  rpc venderPirataSubmundo (VentaRequest) returns (VentaResponse);
+  rpc venderPirataMarina (VentaRequest) returns (VentaResponse);
+}
+
+message cazarecompensa {
+  int64 id = 1;         // ID único del cazador de recompensas
+  string nombre = 2;    // Nombre del cazador de recompensas
+	int64 reputacion = 3; // Reputación del cazador de recompensas
+}	
+
+// Representación de un pirata
+message Pirata {
+  int64 id = 1;                // ID único del pirata
+  string nombre = 2;           // Nombre del pirata
+  int64 recompensa = 3;        // Recompensa ofrecida por el pirata
+  string nivelDePeligrosidad = 4; // Nivel de peligrosidad del pirata
+  string estado = 5;           // Estado del pirata (Buscado, Capturado, Vendido, etc.)
+}
+
+// Solicitud para vender un pirata
+message VentaRequest {
+  int64 pirata_id = 1;         // ID del pirata a vender
+  int64 cazador_id = 2;        // ID del cazarrecompensas que realiza la venta
+}
+
+// Respuesta de la venta
+message VentaResponse {
+  bool exito = 1;              // Indica si la venta fue exitosa
+  int64 pago = 2;              // Cantidad pagada al cazarrecompensas
+  string mensaje = 3;          // Mensaje adicional (fraude, éxito, etc.)
+}
+
+// Respuesta de la lista de piratas
+message Respuesta {
+  repeated Pirata piratas = 1; // Lista de piratas
+}
+
+// Mensaje vacío para solicitudes sin parámetros
+message empty {}
